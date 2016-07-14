@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+        <meta charset="utf-8" />
+        <title>Kmoragas - odl</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Kmoragas </a></h1>
+                <nav><ul>
+                    <li><a href="/">Inicio</a></li>
+                    <li><a href="/category/p7-unix.html">P#7@ Unix</a></li>
+                    <li><a href="/pages/contacto.html">Contacto</a></li>
+                    <li><a href="/archives.html">Archivo</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/2016/odl-rpi.html">OpendDaylight con Docker en un RPI</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2016-07-13T08:13:00-06:00">
+                Published: Wed 13 July 2016
+        </abbr>
+		<br />
+        <abbr class="modified" title="2016-07-13T08:13:00-06:00">
+                Updated: Wed 13 July 2016
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/kmoragas.html">kmoragas</a>
+        </address>
+<p>In <a href="/category/p7-unix.html">P#7@ Unix</a>.</p>
+<p>tags: <a href="/tag/odl.html">odl</a> <a href="/tag/rpi.html">rpi</a> </p>
+</footer><!-- /.post-info --><p>El siguiente documento trata de un intento de instalar OpenDaylight como un SDN Controller sobre un Raspberry PI utilizando Docker, gracias a la distribución HypriotOS.</p>
+<h2>Creación de SWAP</h2>
+<p>Para este caso se recomienda tener 1 GB de Swap con la idea de tener varios servicios en el RPI. Para ello se puede crear un achivo de SWAP sobre el filesyste:</p>
+<div class="highlight"><pre><span></span>sudo dd if=/dev/zero of=/var/swap.bin bs=1024 count=1048576
+mkswap /var/swap.bin
+chown root:root /var/swap.bin
+chmod 0600 /var/swap.bin
+swapon  /var/swap.bin
+</pre></div>
+
+
+<h2>Imagen de OpenDaylight</h2>
+<ol>
+<li>
+<p>Primero es necesario crear un repostirio en GitHub. En micaso será en esta dirección <code>https://github.com/kmoragas/docker</code>. Este repo se utilizará luego para llamarlo desde Docker-Hub (solo que hay problemas dependiendo de la arquitectura). </p>
+</li>
+<li>
+<p>Clonamos el repo en HypriotOS con el usuario <code>pirate</code> </p>
+</li>
+</ol>
+<div class="highlight"><pre><span></span>$ git clone https://github.com/kmoragas/docker.git
+</pre></div>
+
+
+<ol>
+<li>Creamos un Dockerfile en <code>/home/pirate/docker/odl-rpi/Dockerfile</code> con la siguiente información (también es posible obtener una versión más actualizada en el repo de github):</li>
+</ol>
+<div class="highlight"><pre><span></span>#
+# OpenDaylight Karaf Beryllium 0.4.2 Dockerfile
+#
+
+# Se obtiene la imagen base, para el caso de RPI 
+# es necesario que esta imagen sea para ARM
+FROM resin/rpi-raspbian:jessie
+
+# Autor original
+#MAINTAINER  Docker INS &lt;docker@ins.hsr.ch&gt;
+
+# Autor
+MAINTAINER  kmoragas 
+
+# Actualiza la información de apt
+# Instalar OpenJDK 7 in headless mode
+# Instalar wget
+# Descargar distribution-karaf-0.2.0-Helium.tar.gz
+# Instalar (unzip) OpenDaylight
+RUN apt-get update &amp;&amp; \
+    apt-get -y install openjdk-7-jre-headless \
+    wget &amp;&amp; \
+    apt-get clean &amp;&amp; \
+    rm -rf /var/lib/apt/lists/* &amp;&amp; \
+    echo &quot;Download distribution-karaf-0.4.2-Beryllium.tar.gz and install&quot; &amp;&amp; \
+    wget -q -O /opt/odl.tar.gz &quot;https://nexus.opendaylight.org/content/groups/public/org/opendaylight/integration/distribution-karaf/0.4.2-Beryllium-SR2/distribution-karaf-0.4.2-Beryllium-SR2.tar.gz&quot; &amp;&amp; \
+    tar -C /opt -xzf /opt/odl.tar.gz &amp;&amp; \
+    rm /opt/odl.tar.gz
+
+# Establecer la varaible de ambiente JAVA_HOME
+# Además verificar que sea java para ARM
+
+ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-armhf/
+
+
+# Bajar el maximo de la memoria a 256MB
+# De lo contrario no se puede instanciar java. 
+# Pues por defecto Karaf pone el líminte máximo en 512M
+ENV JAVA_MAX_MEM 256M
+
+# Puertos OpenDaylight
+# 162 - SNMP4SDN
+# 179 - BGP
+# 1088 - JMX access
+# 1790 - BGP/PCEP
+# 1830 - Netconf
+# 2400 - OSGi console
+# 2550 - ODL Clustering
+# 2551 - ODL Clustering
+# 2552 - ODL Clustering
+# 4189 - PCEP
+# 4342 - Lisp Flow Mapping
+# 5005 - JConsole
+# 5666 - ODL Internal clustering RPC
+# 6633 - OpenFlow
+# 6640 - OVSDB
+# 6653 - OpenFlow
+# 7800 - ODL Clustering
+# 8000 - Java debug access
+# 8080 - OpenDaylight web portal
+# 8101 - KarafSSH
+# 8181 - MD-SAL RESTConf and DLUX
+# 8383 - Netconf
+# 12001 - ODL Clustering
+EXPOSE 6633 8080 8101 8181
+
+
+# Definir el Directorio de Trabajo
+WORKDIR /opt/distribution-karaf-0.4.2-Beryllium-SR2/bin
+
+
+# Define el comando por defecto
+CMD [&quot;./karaf&quot;,&quot;server&quot;]
+</pre></div>
+
+
+<ol>
+<li>
+<p>Creamos un repositorio en <code>https://hub.docker.com</code> llamado odl-rpi</p>
+</li>
+<li>
+<p>Luego corremos el Dockerfile utilizando:</p>
+</li>
+</ol>
+<div class="highlight"><pre><span></span>$ <span class="nb">cd</span> /home/pirate/docker/odl-rpi/
+$ docker build -t kmoragas/odl-rpi .
+</pre></div>
+
+
+<ol>
+<li>Después de unos cuantos minutos (30 min dependiendo de la conexión a internet). Podemos verificar nuestra imagen local:</li>
+</ol>
+<div class="highlight"><pre><span></span>$ docker images
+REPOSITORY                  TAG                 IMAGE ID            CREATED             SIZE
+odl-rpi                         latest              3ff5c4eb99cd        <span class="m">14</span> hours ago        518.4 MB
+</pre></div>
+
+
+<ol>
+<li>Podemos poner a correr la imagen con:</li>
+</ol>
+<div class="highlight"><pre><span></span>$ docker run -it kmoragas/odl-rpi
+</pre></div>
+
+
+<ol>
+<li>Si queremos exponer otros puertos:</li>
+</ol>
+<div class="highlight"><pre><span></span><span class="x">docker run -p 127.0.0.1:</span><span class="p">$</span><span class="nv">HOSTPORT</span><span class="x">:</span><span class="p">$</span><span class="nv">CONTAINERPORT</span><span class="x"> --name CONTAINER -t someimage</span>
+</pre></div>
+
+
+<h2>Configuración de OpenDaylight</h2>
+<p>Para mostrar todas las posible plugins para instalar se puede utilizar el siguiente comando:</p>
+<div class="highlight"><pre><span></span><span class="n">feature</span><span class="o">:</span><span class="n">list</span>
+</pre></div>
+
+
+<p>Para mostrar solo los componentes instalados:</p>
+<div class="highlight"><pre><span></span><span class="n">feature</span><span class="o">:</span><span class="n">list</span> <span class="o">-</span><span class="n">i</span>
+</pre></div>
+
+
+<h3>DLUX</h3>
+<p>DLUX es la interfaz web para la administración de ODL.</p>
+<ol>
+<li>Para instalar DLUX desde la terminal de karaf:</li>
+</ol>
+<div class="highlight"><pre><span></span><span class="n">feature</span><span class="o">:</span><span class="n">install</span> <span class="n">odl</span><span class="o">-</span><span class="n">dlux</span><span class="o">-</span><span class="n">core</span>  <span class="n">odl</span><span class="o">-</span><span class="n">dlux</span><span class="o">-</span><span class="n">node</span>  <span class="n">odl</span><span class="o">-</span><span class="n">dlux</span><span class="o">-</span><span class="n">yangui</span>  <span class="n">odl</span><span class="o">-</span><span class="n">dlux</span>
+</pre></div>
+
+
+<ol>
+<li>Luego es posible ingresar a: <code>http://&lt;your-karaf-ip&gt;:8181/index.html</code> utilizando el usuario <strong>admin</strong> y la contraseña <strong>admin</strong></li>
+</ol>
+<h1>Conclusiones</h1>
+<ul>
+<li>Es posible instalar ODL sobre HypriotOS el inconveniente es que algunos componentes como DLUX no están compilados para ARM. Como se muestra abajo.</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="nt">Error</span> <span class="nt">executing</span> <span class="nt">command</span><span class="o">:</span> <span class="nt">Can</span><span class="err">&#39;</span><span class="nt">t</span> <span class="nt">install</span> <span class="nt">feature</span> <span class="nt">odl-dlux-core</span><span class="o">/</span><span class="nt">0</span><span class="nc">.0.0</span><span class="o">:</span> 
+<span class="nt">Could</span> <span class="nt">not</span> <span class="nt">start</span> <span class="nt">bundle</span> <span class="nt">mvn</span><span class="nd">:org</span><span class="nc">.fusesource.leveldbjni</span><span class="o">/</span><span class="nt">leveldbjni-all</span><span class="o">/</span><span class="nt">1</span><span class="nc">.8-odl</span> <span class="nt">in</span> <span class="nt">feature</span><span class="o">(</span><span class="nt">s</span><span class="o">)</span> <span class="nt">odl-akka-leveldb-0</span><span class="nc">.7</span><span class="o">:</span> <span class="nt">The</span> <span class="nt">bundle</span> <span class="s2">&quot;org.fusesource.leveldbjni.leveldbjni-all_1.8.0 </span><span class="cp">[</span><span class="mi">295</span><span class="cp">]</span><span class="s2">&quot;</span> <span class="nt">could</span> <span class="nt">not</span> <span class="nt">be</span> <span class="nt">resolved</span><span class="o">.</span> <span class="nt">Reason</span><span class="o">:</span> <span class="nt">No</span> <span class="nt">match</span> <span class="nt">found</span> <span class="nt">for</span> <span class="nt">native</span> <span class="nt">code</span><span class="o">:</span> <span class="nt">META-INF</span><span class="o">/</span><span class="nt">native</span><span class="o">/</span><span class="nt">windows32</span><span class="o">/</span><span class="nt">leveldbjni</span><span class="nc">.dll</span><span class="o">;</span> <span class="nt">processor</span><span class="o">=</span><span class="nt">x86</span><span class="o">;</span> <span class="nt">osname</span><span class="o">=</span><span class="nt">Win32</span><span class="o">,</span> <span class="nt">META-INF</span><span class="o">/</span><span class="nt">native</span><span class="o">/</span><span class="nt">windows64</span><span class="o">/</span><span class="nt">leveldbjni</span><span class="nc">.dll</span><span class="o">;</span> <span class="nt">processor</span><span class="o">=</span><span class="nt">x86-64</span><span class="o">;</span> <span class="nt">osname</span><span class="o">=</span><span class="nt">Win32</span><span class="o">,</span> <span class="nt">META-INF</span><span class="o">/</span><span class="nt">native</span><span class="o">/</span><span class="nt">osx</span><span class="o">/</span><span class="nt">libleveldbjni</span><span class="nc">.jnilib</span><span class="o">;</span> <span class="nt">processor</span><span class="o">=</span><span class="nt">x86</span><span class="o">;</span> <span class="nt">osname</span><span class="o">=</span><span class="nt">macosx</span><span class="o">,</span> <span class="nt">META-INF</span><span class="o">/</span><span class="nt">native</span><span class="o">/</span><span class="nt">osx</span><span class="o">/</span><span class="nt">libleveldbjni</span><span class="nc">.jnilib</span><span class="o">;</span> <span class="nt">processor</span><span class="o">=</span><span class="nt">x86-64</span><span class="o">;</span> <span class="nt">osname</span><span class="o">=</span><span class="nt">macosx</span><span class="o">,</span> <span class="nt">META-INF</span><span class="o">/</span><span class="nt">native</span><span class="o">/</span><span class="nt">linux32</span><span class="o">/</span><span class="nt">libleveldbjni</span><span class="nc">.so</span><span class="o">;</span> <span class="nt">processor</span><span class="o">=</span><span class="nt">x86</span><span class="o">;</span> <span class="nt">osname</span><span class="o">=</span><span class="nt">Linux</span><span class="o">,</span> <span class="nt">META-INF</span><span class="o">/</span><span class="nt">native</span><span class="o">/</span><span class="nt">linux64</span><span class="o">/</span><span class="nt">libleveldbjni</span><span class="nc">.so</span><span class="o">;</span> <span class="nt">processor</span><span class="o">=</span><span class="nt">x86-64</span><span class="o">;</span> <span class="nt">osname</span><span class="o">=</span><span class="nt">Linux</span><span class="o">,</span> <span class="nt">META-INF</span><span class="o">/</span><span class="nt">native</span><span class="o">/</span><span class="nt">sunos64</span><span class="o">/</span><span class="nt">amd64</span><span class="o">/</span><span class="nt">libleveldbjni</span><span class="nc">.so</span><span class="o">;</span> <span class="nt">processor</span><span class="o">=</span><span class="nt">x86-64</span><span class="o">;</span> <span class="nt">osname</span><span class="o">=</span><span class="nt">SunOS</span><span class="o">,</span> <span class="nt">META-INF</span><span class="o">/</span><span class="nt">native</span><span class="o">/</span><span class="nt">sunos64</span><span class="o">/</span><span class="nt">sparcv9</span><span class="o">/</span><span class="nt">libleveldbjni</span><span class="nc">.so</span><span class="o">;</span> <span class="nt">processor</span><span class="o">=</span><span class="nt">sparcv9</span><span class="o">;</span> <span class="nt">osname</span><span class="o">=</span><span class="nt">SunOS</span>
+</pre></div>
+
+
+<ul>
+<li>Además ODL es muy pesado para solo 1GB de RAM. Y tienede a comportarse muy lento. </li>
+</ul>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://tec.siua.ac.cr">TEC-Alajuela</a></li>
+                            <li><a href="http://www.tec.ac.cr">TEC</a></li>
+                            <li><a href="http://www.accessnow.org">AccessNow</a></li>
+                            <li><a href="http://www.jaquerespeis.org">Jaquerespeis</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="https://twitter.com/kmoragas">Twitter</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
