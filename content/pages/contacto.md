@@ -1,12 +1,11 @@
 Title: Contacto
-Date: 2010-12-03 10:20
-Modified: 2010-12-05 19:30
+date: 2016-07-13 23:24
+modified: 2016-07-13 23:24
 Category: Contacto
 Tags: contacto
 Slug: contacto
 Authors: kmoragas
 Summary: Contacto
 
-This is the content of my super blog post.
-
+kmoragas es Ingeniero en Computación del Tecnológico de Costa Rica, Máster en Ciencias de la Computación del Tecnológico de Costa Rica. Es profesor del Tecnológico de Costa Rica y actualmente es el coordinador de la Oficina de TI de la Escuela de Ingeniería en Computación del Tecnológico de Costa Rica de la Sede Interuniversitaria. 
 

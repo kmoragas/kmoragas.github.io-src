@@ -11,7 +11,7 @@ El siguiente documento trata de un intento de instalar OpenDaylight como un SDN 
 
 ## Creación de SWAP
 
-Para este caso se recomienda tener 1 GB de Swap con la idea de tener varios servicios en el RPI. Para ello se puede crear un achivo de SWAP sobre el filesyste:
+Para este caso se recomienda tener 1 GB de Swap con la idea de tener varios servicios en el RPI. Para ello se puede crear un archivo de SWAP sobre el filesyste:
 
 ```
 sudo dd if=/dev/zero of=/var/swap.bin bs=1024 count=1048576
@@ -24,7 +24,7 @@ swapon  /var/swap.bin
 
 ## Imagen de OpenDaylight
 
-1. Primero es necesario crear un repostirio en GitHub. En micaso será en esta dirección `https://github.com/kmoragas/docker`. Este repo se utilizará luego para llamarlo desde Docker-Hub (solo que hay problemas dependiendo de la arquitectura). 
+1. Primero es necesario crear un repostirio en GitHub. En mi caso será en esta dirección `https://github.com/kmoragas/docker`. Este repo se utilizará luego para llamarlo desde Docker-Hub (solo que hay problemas dependiendo de la arquitectura). 
 
 2. Clonamos el repo en HypriotOS con el usuario `pirate` 
 
@@ -71,9 +71,9 @@ RUN apt-get update && \
 ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-armhf/
 
 
-# Bajar el maximo de la memoria a 256MB
+# Bajar el máximo de la memoria a 256MB
 # De lo contrario no se puede instanciar java. 
-# Pues por defecto Karaf pone el líminte máximo en 512M
+# Pues por defecto Karaf pone el límite máximo en 512M
 ENV JAVA_MAX_MEM 256M
 
 # Puertos OpenDaylight
@@ -180,4 +180,4 @@ Could not start bundle mvn:org.fusesource.leveldbjni/leveldbjni-all/1.8-odl in f
 ```
 
 
-- Además ODL es muy pesado para solo 1GB de RAM. Y tienede a comportarse muy lento. 
+- Además ODL es muy pesado para solo 1GB de RAM, y tiende a comportarse muy lento. 

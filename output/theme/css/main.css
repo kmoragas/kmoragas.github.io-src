@@ -160,12 +160,12 @@ img.left, figure.left {float: left; margin: 0 2em 2em 0;}
 }
 
 	/* Banner */
-	#banner h1 {font-size: 3.571em; line-height: 0;}
+	#banner h1 {font-size: 3em; line-height: 0;font-family: courier;}
 	#banner h1 a:link, #banner h1 a:visited {
 		color: #000305;
 		display: block;
 		font-weight: bold;
-		margin: 0 0 .6em .2em;
+		margin: 0 0 .6em 1.8em;
 		text-decoration: none;
 	}
 	#banner h1 a:hover, #banner h1 a:active {
@@ -201,6 +201,7 @@ img.left, figure.left {float: left; margin: 0 2em 2em 0;}
 		height: 30px;
 		padding: 5px 1.5em;
 		text-decoration: none;
+		font-weight: bold;
 	}
 	#banner nav a:hover, #banner nav a:active,
 	#banner nav .active a:link, #banner nav .active a:visited {
@@ -450,3 +451,9 @@ li:last-child .hentry, #content > .hentry {border: 0; margin: 0;}
 	
 	#add-comment input[type='submit'] {float: right; margin: 0 .5em;}
 	#add-comment * {margin-bottom: .5em;}
+
+#banner {
+	background-image: url('../images/kmoragas.jpg');
+	background-repeat: no-repeat;
+	background-size: 70px 70px;
+}

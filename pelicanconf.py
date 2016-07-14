@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 AUTHOR = u'kmoragas'
-SITENAME = u'Kmoragas'
+SITENAME = u'kmoragas'
 SITEURL = ''
 
 PATH = 'content'
@@ -20,9 +20,9 @@ AUTHOR_FEED_RSS = None
 
 # Blogroll
 LINKS = (('TEC-Alajuela', 'http://tec.siua.ac.cr'),
-         ('TEC', 'http://www.tec.ac.cr'),
+         ('Jaquerespeis', 'http://www.jaquerespeis.org'),
          ('AccessNow', 'http://www.accessnow.org'),
-         ('Jaquerespeis', 'http://www.jaquerespeis.org'),)
+         ('TEC', 'http://www.tec.ac.cr'),)
 
 # Social widget
 SOCIAL = (('Twitter', 'https://twitter.com/kmoragas'),)
