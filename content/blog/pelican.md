@@ -92,7 +92,7 @@ Summary: Contacto
 Este es el contenido de ejemplo
 ```
 
-Además ahora es necesario realizar ciertos ajustes al `pelicanconf.py`, entre ellos se requerido alterar los MENUITEMS y eliminar las categorías+paǵinas del menú principal:
+Además ahora es necesario realizar ciertos ajustes al `pelicanconf.py`, entre ellos es requerido alterar los MENUITEMS y eliminar las categorías+paǵinas del menú principal:
 
 ```
 # -*- coding: utf-8 -*- #
@@ -155,5 +155,12 @@ git push origin master
 ```
 
 Luego actualizaré este documento para incluir Travis. 
+
+# Referencias
+
+[1] “Make a Github Pages blog with Pelican,” Fedora Magazine, 13-Oct-2015. Available: https://fedoramagazine.org/make-github-pages-blog-with-pelican/. 
+
+[2] “Pelican 3.6.3 — Pelican 3.6.3 documentation.” [Online]. Available: http://docs.getpelican.com/en/3.6.3/index.html. [Accessed: 13-Jul-2016].
+
 
 -- tuanis

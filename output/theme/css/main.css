@@ -174,7 +174,7 @@ img.left, figure.left {float: left; margin: 0 2em 2em 0;}
 		text-shadow: none;
 	}
 	
-	#banner h1 strong {font-size: 0.36em; font-weight: normal;}
+	#banner h1 strong {font-size: 0.6em; font-weight: normal;}
 	
 	/* Main Nav */
 	#banner nav {
@@ -457,3 +457,18 @@ li:last-child .hentry, #content > .hentry {border: 0; margin: 0;}
 	background-repeat: no-repeat;
 	background-size: 70px 70px;
 }
+
+#subtitle {margin-left: -25px;}
+
+img[alt='right100'] { float: right; width: 100px;}
+img[alt='left100'] { float: left; width: 100px;}
+img[alt='center100'] { float: left; margin: 0px 42%; width: 100px;}
+
+
+img[alt='right200'] { float: right; width: 200px;}
+img[alt='left200'] { float: left; width: 200px;}
+img[alt='center200'] { float: left; margin: 0px 36%; width: 200px;}
+
+img[alt='right300'] { float: right; width: 300px;}
+img[alt='left300'] { float: left; width: 300px;}
+img[alt='center300'] { float: left; margin: 0px 30%; width: 300px;}

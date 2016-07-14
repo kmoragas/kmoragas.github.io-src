@@ -181,3 +181,16 @@ Could not start bundle mvn:org.fusesource.leveldbjni/leveldbjni-all/1.8-odl in f
 
 
 - Además ODL es muy pesado para solo 1GB de RAM, y tiende a comportarse muy lento. 
+
+# Referencias
+
+[1] “Docker Explained: Using Dockerfiles to Automate Building of Images,” DigitalOcean. [Online]. Available: https://www.digitalocean.com/community/tutorials/docker-explained-using-dockerfiles-to-automate-building-of-images. [Accessed: 13-Jul-2016].
+
+
+[2] “Dockerfile reference,” Docker, 30-May-2016. [Online]. Available: https://docs.docker.com/engine/reference/builder/#/from. [Accessed: 13-Jul-2016].
+
+[3] “odl-karaf-helium Dockerfile.” [Online]. Available: https://hub.docker.com/r/hsrnetwork/odl-karaf-helium-0.2.0/~/dockerfile/. [Accessed: 13-Jul-2016].
+
+[4] “Getting started with Docker on your Raspberry Pi · Docker Pirates ARMed with explosive stuff.” [Online]. Available: http://blog.hypriot.com/getting-started-with-docker-on-your-arm-device/. [Accessed: 13-Jul-2016].
+
+-- tuanis
