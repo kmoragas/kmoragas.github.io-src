@@ -10,3 +10,4 @@ Summary: Contacto
 Pŕoximamente
 
 ![right100](theme/images/kmoragas.jpg)
+

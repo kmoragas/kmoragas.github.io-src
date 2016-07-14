@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>kmoragas</title><link>/</link><description>blog</description><atom:link href="/p7-unix/rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 13 Jul 2016 23:23:00 -0600</lastBuildDate><item><title>Pelican, travis y GitHub</title><link>/2016/pelican-git.html</link><description>&lt;p&gt;El siguiente documento intenta aclarar cómo realizar una publicación con Pelican y GitHub-Pages. Por último se agregará la sección de como realizar esta publicación de manera automática con travis. &lt;/p&gt;
+&lt;h2&gt;Instalar Pelican&lt;/h2&gt;
+&lt;p&gt;En fedora, se puede usar el siguiente comando: &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo dnf install python-pelican
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Clonar el repositorio fuente&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git clone git@github.com:username/username.github.io-src ghpages
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Cambiarse al directorio del sitio&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;cd ghpages
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Configurando Pelican&lt;/h2&gt;
+&lt;p&gt;Realicemos un doble chequeo en que estemos trabajando sobre el repositorio fuente: &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git remote -v
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Se debería de ver el repositorio actual &lt;code&gt;username.github.io-src&lt;/code&gt;. Luego es necesario clonar la salida del repositorio como si esta fuera un submódulo. &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git submodule add git@github.com:username/username.github.io.git output
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Pelican provee un comando para iniciar bastante bueno. Corrámoslo:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pelican-quickstart
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;El quickstart hará varias preguntas, por ejemplo: &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    Where do you want to create your new web site? (hit Enter)
+    URL prefix: http://username.github.io
+    Generate a Fabfile/Makefile: Yes (for most users)
+    Auto-reload &amp;amp; simpleHTTP script: Yes (for most users)
+    Upload mechanisms: choose No for all except Github Pages
+    Is this your personal page (username.github.io)? Yes
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Una vez creado el blog por defecto. Se recomienda utilizar la siguiente distribución:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;content/
+    blog/
+        articulo1.md
+    images/
+    pages/
+        contacto.md
+    pdfs/
+themes/
+    notmyidea/
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;El contenido de &lt;code&gt;contacto.md&lt;/code&gt; se muestra a continuación. Tómese en cuenta que las metadatos son necesarios:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Title&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Contacto&lt;/span&gt;
+&lt;span class="n"&gt;Date&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;2010&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;12&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;03&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;20&lt;/span&gt;
+&lt;span class="n"&gt;Modified&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;2010&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;12&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;05&lt;/span&gt; &lt;span class="mi"&gt;19&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;30&lt;/span&gt;
+&lt;span class="n"&gt;Category&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Contacto&lt;/span&gt;
+&lt;span class="n"&gt;Tags&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;contacto&lt;/span&gt;
+&lt;span class="n"&gt;Slug&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;contacto&lt;/span&gt;
+&lt;span class="n"&gt;Authors&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;kmoragas&lt;/span&gt;
+&lt;span class="n"&gt;Summary&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Contacto&lt;/span&gt;
+
+&lt;span class="n"&gt;Este&lt;/span&gt; &lt;span class="n"&gt;es&lt;/span&gt; &lt;span class="n"&gt;el&lt;/span&gt; &lt;span class="n"&gt;contenido&lt;/span&gt; &lt;span class="n"&gt;de&lt;/span&gt; &lt;span class="n"&gt;ejemplo&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Además ahora es necesario realizar ciertos ajustes al &lt;code&gt;pelicanconf.py&lt;/code&gt;, entre ellos es requerido alterar los MENUITEMS y eliminar las categorías+paǵinas del menú principal:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# -*- coding: utf-8 -*- #&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;__future__&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;unicode_literals&lt;/span&gt;
+
+&lt;span class="n"&gt;AUTHOR&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;u&amp;#39;kmoragas&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;SITENAME&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;u&amp;#39;kmoragas&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;SITEURL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;
+
+&lt;span class="n"&gt;PATH&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;content&amp;#39;&lt;/span&gt;
+
+&lt;span class="n"&gt;TIMEZONE&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;America/Costa_Rica&amp;#39;&lt;/span&gt;
+
+&lt;span class="n"&gt;DEFAULT_LANG&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;u&amp;#39;es&amp;#39;&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Feed generation is usually not desired when developing&lt;/span&gt;
+&lt;span class="n"&gt;FEED_ALL_ATOM&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;
+&lt;span class="n"&gt;CATEGORY_FEED_ATOM&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;
+&lt;span class="n"&gt;TRANSLATION_FEED_ATOM&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;
+&lt;span class="n"&gt;AUTHOR_FEED_ATOM&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;
+&lt;span class="n"&gt;AUTHOR_FEED_RSS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Blogroll&lt;/span&gt;
+&lt;span class="n"&gt;LINKS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;MY-Link&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;#&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Social widget&lt;/span&gt;
+&lt;span class="n"&gt;SOCIAL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Twitter&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;https://twitter.com/kmoragas&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),)&lt;/span&gt;
+
+&lt;span class="n"&gt;DEFAULT_PAGINATION&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;
+
+&lt;span class="c1"&gt;#DISPLAY_PAGES_ON_MENU = True&lt;/span&gt;
+
+&lt;span class="n"&gt;DISPLAY_CATEGORIES_ON_MENU&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;False&lt;/span&gt;
+&lt;span class="n"&gt;DISPLAY_PAGES_ON_MENU&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;False&lt;/span&gt;
+
+&lt;span class="n"&gt;MENUITEMS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Inicio&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;P#7@ Unix&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;/category/p7-unix.html&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Contacto&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;/pages/contacto.html&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Archivo&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;/archives.html&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;STATIC_PATHS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;images&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;pdfs&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;blog&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;ARTICLE_PATHS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;blog&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;ARTICLE_SAVE_AS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;{date:%Y}/{slug}.html&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;ARTICLE_URL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;{date:%Y}/{slug}.html&amp;#39;&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Uncomment following line if you want document-relative URLs when developing&lt;/span&gt;
+&lt;span class="c1"&gt;#RELATIVE_URLS = True&lt;/span&gt;
+
+&lt;span class="n"&gt;THEME&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;themes/notmyidea&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;En este momento solo queda publicar en los dos repositorios, (recordar que el segundo repo está ligado como un subrepo en &lt;code&gt;output&lt;/code&gt;):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git add .
+git commit -a -m &amp;quot;Mi primer post&amp;quot;
+git push origin master
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Luego actualizaré este documento para incluir Travis. &lt;/p&gt;
+&lt;h1&gt;Referencias&lt;/h1&gt;
+&lt;p&gt;[1] “Make a Github Pages blog with Pelican,” Fedora Magazine, 13-Oct-2015. Available: https://fedoramagazine.org/make-github-pages-blog-with-pelican/. &lt;/p&gt;
+&lt;p&gt;[2] “Pelican 3.6.3 — Pelican 3.6.3 documentation.” [Online]. Available: http://docs.getpelican.com/en/3.6.3/index.html. [Accessed: 13-Jul-2016].&lt;/p&gt;
+&lt;p&gt;-- tuanis&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">kmoragas</dc:creator><pubDate>Wed, 13 Jul 2016 23:23:00 -0600</pubDate><guid>tag:,2016-07-13:2016/pelican-git.html</guid><category>pelican</category><category>travis</category><category>github</category></item><item><title>OpendDaylight con Docker en un RPI</title><link>/2016/odl-rpi.html</link><description>&lt;p&gt;El siguiente documento trata de un intento de instalar OpenDaylight como un SDN Controller sobre un Raspberry PI utilizando Docker, gracias a la distribución HypriotOS.&lt;/p&gt;
+&lt;h2&gt;Creación de SWAP&lt;/h2&gt;
+&lt;p&gt;Para este caso se recomienda tener 1 GB de Swap con la idea de tener varios servicios en el RPI. Para ello se puede crear un archivo de SWAP sobre el filesyste:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo dd if=/dev/zero of=/var/swap.bin bs=1024 count=1048576
+mkswap /var/swap.bin
+chown root:root /var/swap.bin
+chmod 0600 /var/swap.bin
+swapon  /var/swap.bin
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Imagen de OpenDaylight&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Primero es necesario crear un repostirio en GitHub. En mi caso será en esta dirección &lt;code&gt;https://github.com/kmoragas/docker&lt;/code&gt;. Este repo se utilizará luego para llamarlo desde Docker-Hub (solo que hay problemas dependiendo de la arquitectura). &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Clonamos el repo en HypriotOS con el usuario &lt;code&gt;pirate&lt;/code&gt; &lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ git clone https://github.com/kmoragas/docker.git
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;Creamos un Dockerfile en &lt;code&gt;/home/pirate/docker/odl-rpi/Dockerfile&lt;/code&gt; con la siguiente información (también es posible obtener una versión más actualizada en el repo de github):&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;#
+# OpenDaylight Karaf Beryllium 0.4.2 Dockerfile
+#
+
+# Se obtiene la imagen base, para el caso de RPI 
+# es necesario que esta imagen sea para ARM
+FROM resin/rpi-raspbian:jessie
+
+# Autor original
+#MAINTAINER  Docker INS &amp;lt;docker@ins.hsr.ch&amp;gt;
+
+# Autor
+MAINTAINER  kmoragas 
+
+# Actualiza la información de apt
+# Instalar OpenJDK 7 in headless mode
+# Instalar wget
+# Descargar distribution-karaf-0.2.0-Helium.tar.gz
+# Instalar (unzip) OpenDaylight
+RUN apt-get update &amp;amp;&amp;amp; \
+    apt-get -y install openjdk-7-jre-headless \
+    wget &amp;amp;&amp;amp; \
+    apt-get clean &amp;amp;&amp;amp; \
+    rm -rf /var/lib/apt/lists/* &amp;amp;&amp;amp; \
+    echo &amp;quot;Download distribution-karaf-0.4.2-Beryllium.tar.gz and install&amp;quot; &amp;amp;&amp;amp; \
+    wget -q -O /opt/odl.tar.gz &amp;quot;https://nexus.opendaylight.org/content/groups/public/org/opendaylight/integration/distribution-karaf/0.4.2-Beryllium-SR2/distribution-karaf-0.4.2-Beryllium-SR2.tar.gz&amp;quot; &amp;amp;&amp;amp; \
+    tar -C /opt -xzf /opt/odl.tar.gz &amp;amp;&amp;amp; \
+    rm /opt/odl.tar.gz
+
+# Establecer la varaible de ambiente JAVA_HOME
+# Además verificar que sea java para ARM
+
+ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-armhf/
+
+
+# Bajar el máximo de la memoria a 256MB
+# De lo contrario no se puede instanciar java. 
+# Pues por defecto Karaf pone el límite máximo en 512M
+ENV JAVA_MAX_MEM 256M
+
+# Puertos OpenDaylight
+# 162 - SNMP4SDN
+# 179 - BGP
+# 1088 - JMX access
+# 1790 - BGP/PCEP
+# 1830 - Netconf
+# 2400 - OSGi console
+# 2550 - ODL Clustering
+# 2551 - ODL Clustering
+# 2552 - ODL Clustering
+# 4189 - PCEP
+# 4342 - Lisp Flow Mapping
+# 5005 - JConsole
+# 5666 - ODL Internal clustering RPC
+# 6633 - OpenFlow
+# 6640 - OVSDB
+# 6653 - OpenFlow
+# 7800 - ODL Clustering
+# 8000 - Java debug access
+# 8080 - OpenDaylight web portal
+# 8101 - KarafSSH
+# 8181 - MD-SAL RESTConf and DLUX
+# 8383 - Netconf
+# 12001 - ODL Clustering
+EXPOSE 6633 8080 8101 8181
+
+
+# Definir el Directorio de Trabajo
+WORKDIR /opt/distribution-karaf-0.4.2-Beryllium-SR2/bin
+
+
+# Define el comando por defecto
+CMD [&amp;quot;./karaf&amp;quot;,&amp;quot;server&amp;quot;]
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Creamos un repositorio en &lt;code&gt;https://hub.docker.com&lt;/code&gt; llamado odl-rpi&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Luego corremos el Dockerfile utilizando:&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ &lt;span class="nb"&gt;cd&lt;/span&gt; /home/pirate/docker/odl-rpi/
+$ docker build -t kmoragas/odl-rpi .
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;Después de unos cuantos minutos (30 min dependiendo de la conexión a internet). Podemos verificar nuestra imagen local:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ docker images
+REPOSITORY                  TAG                 IMAGE ID            CREATED             SIZE
+odl-rpi                         latest              3ff5c4eb99cd        &lt;span class="m"&gt;14&lt;/span&gt; hours ago        518.4 MB
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;Podemos poner a correr la imagen con:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ docker run -it kmoragas/odl-rpi
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;Si queremos exponer otros puertos:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="x"&gt;docker run -p 127.0.0.1:&lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;HOSTPORT&lt;/span&gt;&lt;span class="x"&gt;:&lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;CONTAINERPORT&lt;/span&gt;&lt;span class="x"&gt; --name CONTAINER -t someimage&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Configuración de OpenDaylight&lt;/h2&gt;
+&lt;p&gt;Para mostrar todas las posible plugins para instalar se puede utilizar el siguiente comando:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;feature&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;list&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Para mostrar solo los componentes instalados:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;feature&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;list&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;DLUX&lt;/h3&gt;
+&lt;p&gt;DLUX es la interfaz web para la administración de ODL.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Para instalar DLUX desde la terminal de karaf:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;feature&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="n"&gt;odl&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;dlux&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;core&lt;/span&gt;  &lt;span class="n"&gt;odl&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;dlux&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;node&lt;/span&gt;  &lt;span class="n"&gt;odl&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;dlux&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;yangui&lt;/span&gt;  &lt;span class="n"&gt;odl&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;dlux&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;Luego es posible ingresar a: &lt;code&gt;http://&amp;lt;your-karaf-ip&amp;gt;:8181/index.html&lt;/code&gt; utilizando el usuario &lt;strong&gt;admin&lt;/strong&gt; y la contraseña &lt;strong&gt;admin&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1&gt;Conclusiones&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Es posible instalar ODL sobre HypriotOS el inconveniente es que algunos componentes como DLUX no están compilados para ARM. Como se muestra abajo.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;Error&lt;/span&gt; &lt;span class="nt"&gt;executing&lt;/span&gt; &lt;span class="nt"&gt;command&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nt"&gt;Can&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;t&lt;/span&gt; &lt;span class="nt"&gt;install&lt;/span&gt; &lt;span class="nt"&gt;feature&lt;/span&gt; &lt;span class="nt"&gt;odl-dlux-core&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;0&lt;/span&gt;&lt;span class="nc"&gt;.0.0&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; 
+&lt;span class="nt"&gt;Could&lt;/span&gt; &lt;span class="nt"&gt;not&lt;/span&gt; &lt;span class="nt"&gt;start&lt;/span&gt; &lt;span class="nt"&gt;bundle&lt;/span&gt; &lt;span class="nt"&gt;mvn&lt;/span&gt;&lt;span class="nd"&gt;:org&lt;/span&gt;&lt;span class="nc"&gt;.fusesource.leveldbjni&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;leveldbjni-all&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;1&lt;/span&gt;&lt;span class="nc"&gt;.8-odl&lt;/span&gt; &lt;span class="nt"&gt;in&lt;/span&gt; &lt;span class="nt"&gt;feature&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nt"&gt;s&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="nt"&gt;odl-akka-leveldb-0&lt;/span&gt;&lt;span class="nc"&gt;.7&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nt"&gt;The&lt;/span&gt; &lt;span class="nt"&gt;bundle&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;org.fusesource.leveldbjni.leveldbjni-all_1.8.0 &lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;295&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="nt"&gt;could&lt;/span&gt; &lt;span class="nt"&gt;not&lt;/span&gt; &lt;span class="nt"&gt;be&lt;/span&gt; &lt;span class="nt"&gt;resolved&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="nt"&gt;Reason&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nt"&gt;No&lt;/span&gt; &lt;span class="nt"&gt;match&lt;/span&gt; &lt;span class="nt"&gt;found&lt;/span&gt; &lt;span class="nt"&gt;for&lt;/span&gt; &lt;span class="nt"&gt;native&lt;/span&gt; &lt;span class="nt"&gt;code&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nt"&gt;META-INF&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;native&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;windows32&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;leveldbjni&lt;/span&gt;&lt;span class="nc"&gt;.dll&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt; &lt;span class="nt"&gt;processor&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nt"&gt;x86&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt; &lt;span class="nt"&gt;osname&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nt"&gt;Win32&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;META-INF&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;native&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;windows64&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;leveldbjni&lt;/span&gt;&lt;span class="nc"&gt;.dll&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt; &lt;span class="nt"&gt;processor&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nt"&gt;x86-64&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt; &lt;span class="nt"&gt;osname&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nt"&gt;Win32&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;META-INF&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;native&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;osx&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;libleveldbjni&lt;/span&gt;&lt;span class="nc"&gt;.jnilib&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt; &lt;span class="nt"&gt;processor&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nt"&gt;x86&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt; &lt;span class="nt"&gt;osname&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nt"&gt;macosx&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;META-INF&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;native&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;osx&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;libleveldbjni&lt;/span&gt;&lt;span class="nc"&gt;.jnilib&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt; &lt;span class="nt"&gt;processor&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nt"&gt;x86-64&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt; &lt;span class="nt"&gt;osname&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nt"&gt;macosx&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;META-INF&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;native&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;linux32&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;libleveldbjni&lt;/span&gt;&lt;span class="nc"&gt;.so&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt; &lt;span class="nt"&gt;processor&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nt"&gt;x86&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt; &lt;span class="nt"&gt;osname&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nt"&gt;Linux&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;META-INF&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;native&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;linux64&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;libleveldbjni&lt;/span&gt;&lt;span class="nc"&gt;.so&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt; &lt;span class="nt"&gt;processor&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nt"&gt;x86-64&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt; &lt;span class="nt"&gt;osname&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nt"&gt;Linux&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;META-INF&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;native&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;sunos64&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;amd64&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;libleveldbjni&lt;/span&gt;&lt;span class="nc"&gt;.so&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt; &lt;span class="nt"&gt;processor&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nt"&gt;x86-64&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt; &lt;span class="nt"&gt;osname&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nt"&gt;SunOS&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;META-INF&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;native&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;sunos64&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;sparcv9&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;libleveldbjni&lt;/span&gt;&lt;span class="nc"&gt;.so&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt; &lt;span class="nt"&gt;processor&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nt"&gt;sparcv9&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt; &lt;span class="nt"&gt;osname&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nt"&gt;SunOS&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Además ODL es muy pesado para solo 1GB de RAM, y tiende a comportarse muy lento. &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Referencias&lt;/h1&gt;
+&lt;p&gt;[1] “Docker Explained: Using Dockerfiles to Automate Building of Images,” DigitalOcean. [Online]. Available: https://www.digitalocean.com/community/tutorials/docker-explained-using-dockerfiles-to-automate-building-of-images. [Accessed: 13-Jul-2016].&lt;/p&gt;
+&lt;p&gt;[2] “Dockerfile reference,” Docker, 30-May-2016. [Online]. Available: https://docs.docker.com/engine/reference/builder/#/from. [Accessed: 13-Jul-2016].&lt;/p&gt;
+&lt;p&gt;[3] “odl-karaf-helium Dockerfile.” [Online]. Available: https://hub.docker.com/r/hsrnetwork/odl-karaf-helium-0.2.0/~/dockerfile/. [Accessed: 13-Jul-2016].&lt;/p&gt;
+&lt;p&gt;[4] “Getting started with Docker on your Raspberry Pi · Docker Pirates ARMed with explosive stuff.” [Online]. Available: http://blog.hypriot.com/getting-started-with-docker-on-your-arm-device/. [Accessed: 13-Jul-2016].&lt;/p&gt;
+&lt;p&gt;-- tuanis&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">kmoragas</dc:creator><pubDate>Wed, 13 Jul 2016 08:13:00 -0600</pubDate><guid>tag:,2016-07-13:2016/odl-rpi.html</guid><category>odl</category><category>rpi</category></item></channel></rss>

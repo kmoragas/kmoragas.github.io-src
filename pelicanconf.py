@@ -19,6 +19,11 @@ TRANSLATION_FEED_ATOM = None
 AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
+FEED_RSS = 'rss.xml'
+FEED_ALL_RSS = 'all_rss.xml'
+CATEGORY_FEED_RSS = '%s/rss.xml'
+FEED_MAX_ITEMS = 10
+
 # Blogroll
 LINKS = (('TEC-Alajuela', 'http://tec.siua.ac.cr'),
          ('Jaquerespeis', 'http://www.jaquerespeis.org'),
@@ -61,3 +66,4 @@ THEME = "themes/notmyidea"
 
 INDEX_SAVE_AS = 'blog.html'
 #INDEX_URL = 'blog/'
+TWITTER_USERNAME = 'kmoragas'
