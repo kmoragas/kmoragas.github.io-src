@@ -40,7 +40,7 @@
 <p>etiquetas: <a href="/tag/odl.html">odl</a> <a href="/tag/rpi.html">rpi</a> </p>
 </footer><!-- /.post-info --><p>El siguiente documento trata de un intento de instalar OpenDaylight como un SDN Controller sobre un Raspberry PI utilizando Docker, gracias a la distribución HypriotOS.</p>
 <h2>Creación de SWAP</h2>
-<p>Para este caso se recomienda tener 1 GB de Swap con la idea de tener varios servicios en el RPI. Para ello se puede crear un achivo de SWAP sobre el filesyste:</p>
+<p>Para este caso se recomienda tener 1 GB de Swap con la idea de tener varios servicios en el RPI. Para ello se puede crear un archivo de SWAP sobre el filesyste:</p>
 <div class="highlight"><pre><span></span>sudo dd if=/dev/zero of=/var/swap.bin bs=1024 count=1048576
 mkswap /var/swap.bin
 chown root:root /var/swap.bin
@@ -52,7 +52,7 @@ swapon  /var/swap.bin
 <h2>Imagen de OpenDaylight</h2>
 <ol>
 <li>
-<p>Primero es necesario crear un repostirio en GitHub. En micaso será en esta dirección <code>https://github.com/kmoragas/docker</code>. Este repo se utilizará luego para llamarlo desde Docker-Hub (solo que hay problemas dependiendo de la arquitectura). </p>
+<p>Primero es necesario crear un repostirio en GitHub. En mi caso será en esta dirección <code>https://github.com/kmoragas/docker</code>. Este repo se utilizará luego para llamarlo desde Docker-Hub (solo que hay problemas dependiendo de la arquitectura). </p>
 </li>
 <li>
 <p>Clonamos el repo en HypriotOS con el usuario <code>pirate</code> </p>
@@ -100,9 +100,9 @@ RUN apt-get update &amp;&amp; \
 ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-armhf/
 
 
-# Bajar el maximo de la memoria a 256MB
+# Bajar el máximo de la memoria a 256MB
 # De lo contrario no se puede instanciar java. 
-# Pues por defecto Karaf pone el líminte máximo en 512M
+# Pues por defecto Karaf pone el límite máximo en 512M
 ENV JAVA_MAX_MEM 256M
 
 # Puertos OpenDaylight
